@@ -1,0 +1,9 @@
+<ul class="list-inline">
+  <li class="text-warning">Did you mean:</li>
+<% for query, hits in @spellcheck %>
+  <li>
+    <strong><%= link_to_search(h(query), query, *@filter) %></strong>
+    <span class="badge"><%=h hits %></span>
+  </li>
+<% end %>
+</ul>

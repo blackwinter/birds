@@ -1,0 +1,81 @@
+html, body {
+  height:         100%;
+}
+
+#wrap {
+  min-height:     100%;
+  height:         auto !important;
+  height:         100%;
+  margin:         0 auto -120px;
+}
+
+#push {
+  height:         120px;
+}
+
+footer {
+  height:         80px;
+  margin-top:     40px;
+  padding-bottom: 20px;
+  padding-top:    20px;
+  border-top:     1px solid #E5E5E5;
+  color:          #777777;
+}
+
+.navbar-brand {
+  padding:        1px 15px;
+}
+
+.facet-filter input {
+  width:          90%;
+  height:         30px;
+  font-size:      12px;
+}
+
+.facet-filter, .filter-list {
+  margin-top:     0.5em;
+}
+
+.filter-list > li {
+  line-height:    1.7em;
+}
+
+.list-group-item.collapse {
+  display:        none;
+}
+
+.list-group-item.collapse.in {
+  display:        block;
+}
+
+.toggle-explain {
+  cursor:         help;
+}
+
+.toggle-explain + pre[id|=explain] {
+  margin-top:     0.5em;
+}
+
+.toggle-facet, .facet-filter .glyphicon-remove {
+  cursor:         pointer;
+}
+
+.facet-filter .glyphicon-remove::before {
+  vertical-align: middle;
+}
+
+.facet-group > li {
+  font-size:      small;
+  padding:        5px 10px;
+}
+
+.info-display {
+  margin:         0.5em 0;
+  padding:        5px 10px;
+  border-radius:  4px;
+  font-size:      small;
+}
+
+a[href] > mark {
+  color:          inherit;
+}

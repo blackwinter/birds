@@ -1,0 +1,14 @@
+<ol start="<%= defined?(start) && start || 1 %>">
+<% for document in documents; id, score = document.id, h('%.2f' % document.score) %>
+  <li>
+    <%= link_to_document(document, hl = defined?(highlighting) == 'local-variable' ? highlighting[id] : {}) %>
+  <% unless defined?(explain) && explain %>
+    <span class="badge"><%= score %></span>
+  <% else; eid = h("explain-#{id}") %>
+    <span class="badge toggle-explain" data-toggle="collapse" data-target="#<%= eid %>" title="Toggle score explanation"><%= score %></span>
+    <pre id="<%= eid %>" class="collapse small"><%=h explain[id] %></pre>
+  <% end %>
+  <%= partial :display, fields: hl.keys.sort.map { |k| [k, settings.display_fields[k] || k.split('_')[0..-2].join('_').capitalize] }.uniq { |_, l| l }, document: hl, info: true unless hl.empty? %>
+  </li>
+<% end %>
+</ol>

@@ -1,0 +1,6 @@
+<dl class="dl-horizontal<%= ' info-display bg-info' if defined?(info) && info %>">
+<% for key, label in fields; values = values_for(key, document) or next %>
+  <dt class="text-muted"><%=h label || key %></dt>
+  <dd><%= values.join('<br />') %></dd>
+<% end %>
+</dl>

@@ -1,0 +1,4 @@
+require 'birds'
+require 'birds/app'
+
+run Birds::App.set(solr_core: 'birds')

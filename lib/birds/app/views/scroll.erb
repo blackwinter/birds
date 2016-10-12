@@ -1,0 +1,23 @@
+<% if @result %>
+  <ol start="<%= @start + 1 %>">
+  <% for document in @result %>
+    <li><%= link_to_document(document) %></li>
+  <% end %>
+  </ol>
+  <%= pagination_for(:scroll, @field, @letter) %>
+<% elsif @fields %>
+  <ul>
+  <% for field, label in @fields %>
+    <li><%= link_to(h(label), :scroll, field) %></li>
+  <% end %>
+  </ul>
+<% else %>
+  <ul>
+  <% for letter, count in @letters %>
+    <li>
+      <%= link_to(h(letter), :scroll, @field, letter) %>
+      <span class="badge"><%=h count %></span>
+    </li>
+  <% end %>
+  </ul>
+<% end %>

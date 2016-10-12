@@ -1,0 +1,22 @@
+<% if @result %>
+  <ol>
+  <% for document in @result %>
+    <li><%= link_to_document(document) %></li>
+  <% end %>
+  </ol>
+<% elsif @fields %>
+  <ul>
+  <% for field, labels in @fields %>
+    <li><%= link_to(h(labels.last), :browse, field) %></li>
+  <% end %>
+  </ul>
+<% else %>
+  <ul>
+  <% for category, count in @hierarchy %>
+    <li>
+      <%= link_to(h(category), :browse, @field, category) %>
+      <span class="badge"><%=h count %></span>
+    </li>
+  <% end %>
+  </ul>
+<% end %>

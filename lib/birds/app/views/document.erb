@@ -1,0 +1,7 @@
+<%= partial :display, fields: settings.display_fields, document: @document %>
+
+<% for key, mlt in @similar %>
+<h2>Similar documents<%= " (#{key})" if key %></h2>
+
+<%= partial :documents, documents: mlt, explain: @explain[key] %>
+<% end %>

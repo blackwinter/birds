@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title><%=h @page_title %><% if @page_title_extra %> (<%=h @page_title_extra %>)<% end %> · <%=h settings.site_title %></title>
+
+  <link rel="shortcut icon" href="<%= url('/favicon.ico') %>" />
+
+  <link rel="stylesheet" href="<%=h settings.bootstrap_url %>/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="<%=h settings.bootstrap_url %>/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="<%= url('/css/birds.css') %>" />
+</head>
+<body>
+  <a class="sr-only" href="#content">Skip to main content</a>
+
+  <div id="wrap">
+    <header class="navbar navbar-default" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="<%= url('/') %>" title="<%=h settings.site_title %>">
+            <% bird = { 'Search' => 2, 'Browse' => 1, 'Scroll' => 3 }[@page_title] || :s %>
+            <img src="<%= url("/images/bird#{bird}.png") %>" alt="Bird<%= bird %>" />
+          </a>
+        </div>
+
+        <nav class="collapse navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+            <%= nav_item('/search', 'Search', 'Search for documents') %>
+            <%= nav_item('/browse', 'Browse', 'Browse by category')     unless settings.browse_fields.empty? %>
+            <%= nav_item('/scroll', 'Scroll', 'Scroll through indexes') unless settings.scroll_fields.empty? %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="btn disabled" href="<%= url('/help') %>" title="View help pages">Help</a></li>
+          </ul>
+          <form action="<%= url('/search') %>" method="GET" class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="search" class="form-control" title="Quick search" name="qq" id="qq" required="required" placeholder="Search" />
+            </div>
+            <button type="submit" class="btn btn-default" title="Search"><%= glyphicon(:search) %></button>
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content" role="main">
+      <div class="container">
+      <% if @code && @error %>
+        <p><big>Oops... <%=h @code %> – <%=h @error %></big></p>
+      <% else %>
+        <h1>
+          <%=h @page_title %>
+        <% if pte = @page_title_extra %>
+          <small>(<%= @page_title_query ? link_to_search(h(pte), @page_title_query) : h(pte) %>)</small>
+        <% end %>
+        </h1>
+        <%= yield %>
+      <% end %>
+      </div>
+    </main>
+
+    <div id="push"></div>
+  </div>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>
+        <em>powered by</em> <a href="//lucene.apache.org/solr/">Solr</a>
+        <em>and</em> <a href="http://sinatrarb.com">Sinatra</a>
+        — <a href="//blackwinter.github.com/birds">Birds</a>
+        <strong>v<%= Birds::VERSION %></strong>
+      </p>
+    </div>
+  </footer>
+
+  <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+  <script src="<%=h settings.bootstrap_url %>/js/bootstrap.min.js"></script>
+  <script src="<%= url('/js/birds.js') %>"></script>
+</body>
+</html>

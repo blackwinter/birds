@@ -1,0 +1,47 @@
+<%
+  position = 0
+  for facet, (label, _) in settings.facet_fields
+    counts = @facets[facet] or next
+
+    fid = "facet-#{h(facet)}"
+    ffid = fid + '-filter'
+
+    expand = (position += 1) < 4
+
+    collapse = max = nil
+%>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title toggle-facet" data-toggle="collapse" data-target="#<%= fid %>, #<%= ffid %>" title="Toggle facet list"><%=h label %></h4>
+    <% if counts.size > 8 %>
+      <div class="facet-filter collapse<%= ' in' if expand %>" id="<%= ffid %>">
+        <div class="pull-right"><%= glyphicon(:remove, title: 'Clear facet filter') %></div>
+        <form><input class="form-control" type="text" placeholder="Filter <%=h label.downcase %>" /></form>
+      </div>
+    <% end %>
+    </div>
+    <ul class="facet-group list-group compact-list-group collapse<%= ' in' if expand %>" id="<%= fid %>">
+  <% if counts.respond_to?(:gap) %>
+    <% for (value, count), index in counts.reverse_each.with_index %>
+      <li class="list-group-item clearfix<%= ' facet-collapse collapse' if collapse ||= index > 2 %>">
+        <%= link_to_facet(facet, value, counts.gap) %>
+        <span class="badge"><%= count %></span>
+      </li>
+    <% end %>
+  <% else %>
+    <% for (value, count), index in counts.each_with_index; max ||= count %>
+      <li class="list-group-item clearfix<%= ' facet-collapse collapse' if collapse ||= index > 5 || count < max / 10 %>">
+        <%= link_to_facet(facet, value) %>
+        <span class="badge"><%= count %></span>
+      </li>
+    <% end %>
+  <% end %>
+    <% if collapse %>
+      <li class="list-group-item toggle-facet" data-toggle="collapse" data-target="#<%= fid %> .facet-collapse.collapse">
+        <span class="facet-collapse collapse in">More…</span>
+        <span class="facet-collapse collapse">Less…</span>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

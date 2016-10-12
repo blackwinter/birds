@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-9">
+    <form action="<%= url('/search') %>" method="GET" class="form-inline" role="form">
+      <div class="form-group">
+        <label class="control-label sr-only" for="q">Query</label>
+        <input type="search" class="form-control input-lg" name="q" id="q" size="40" value="<%=h @query %>" required="required" placeholder="Enter Query…" list="sample_queries" />
+        <datalist id="sample_queries">
+        <% for label, value in settings.sample_queries %>
+          <option label="<%=h label %>" value="<%=h value %>" />
+        <% end %>
+        </datalist>
+      </div>
+      <button type="submit" class="btn btn-default btn-lg" title="Search">
+        <%= glyphicon(:search) %> Search
+      </button>
+    </form>
+
+  <% if @filter %>
+    <ul class="filter-list list-inline">
+    <% for filter in @filter %>
+      <li>
+        <%= link_to_search('&times;', @query, *@filter - [filter], class: 'close', title: 'Remove filter') %>
+        <code><%=h filter %></code>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+
+  <% if @result %>
+    <%= partial :spellcheck unless @spellcheck.empty? %>
+    <%= partial :documents, documents: @result, explain: @explain, highlighting: @highlighting, start: @offset + 1 %>
+    <%= pagination_for(:search, query_params) %>
+  </div>
+  <div class="col-md-3">
+    <%= partial :facets %>
+  <% else %>
+    <h2>Query syntax</h2>
+
+    <dl class="dl-horizontal">
+      <dt><code>term</code></dt>
+      <dd>Query term <em>should</em> occur.</dd>
+      <dt><code>+term</code></dt>
+      <dd>Query term <em>must</em> occur.</dd>
+      <dt><code>-term</code></dt>
+      <dd>Query term <em>must not</em> occur.</dd>
+      <dt><code>term*</code></dt>
+      <dd>Wildcard search for <em>zero or more</em> characters.</dd>
+      <dt><code>term?</code></dt>
+      <dd>Wildcard search for <em>one</em> character.</dd>
+      <dt><code>"..."</code></dt>
+      <dd>Phrase search.</dd>
+      <dt><code>term~<kbd>n</kbd></code></dt>
+      <dd>Fuzzy search.
+        <span class="text-muted">(The number <kbd>n</kbd> is optional)</span></dd>
+      <dt><code>term^<kbd>n</kbd></code></dt>
+      <dd>Boosting.
+        <span class="text-muted">(The number <kbd>n</kbd> is required)</span></dd>
+      <dt><code>field:term</code></dt>
+      <dd>Field-specific search.</dd>
+    </dl>
+
+    <p>For further details, see <a href="http://lucene.apache.org/core/<%=h settings.solr.solr_version.tr('.', '_') %>/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview">here</a> or <a href="http://yonik.com/solr/query-syntax/">here</a>.</p>
+  <% end %>
+  </div>
+</div>

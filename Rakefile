@@ -13,7 +13,7 @@ begin
       email:        %q{jens.wille@gmail.com},
       license:      %q{AGPL-3.0},
       homepage:     :blackwinter,
-      extra_files:  FileList['*.sample', 'lib/**/{public,views}/*'].to_a,
+      extra_files:  FileList['*.sample', 'lib/**/{public{,/{css,images,js}},views}/*'].to_a,
       dependencies: {
         'sinatra-bells' => '~> 0.4',
         'solr4r'        => '~> 0.3',
